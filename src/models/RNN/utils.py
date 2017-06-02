@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 
 from configparser import ConfigParser
-from utils.set_dirs import get_conf_dir
+from utilities.set_dirs import get_conf_dir
 
 conf_dir = get_conf_dir(debug=False)
 parser = ConfigParser(os.environ)

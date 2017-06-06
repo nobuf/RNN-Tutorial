@@ -16,8 +16,8 @@ from features.utils.text import ndarray_to_text, sparse_tuple_to_texts
 # in future different than utils class
 from models.RNN.utils import create_optimizer
 from data_manipulation.datasets import read_datasets
-from utils.set_dirs import get_conf_dir, get_model_dir
-import utils.gpu as gpu_tool
+from utilities.set_dirs import get_conf_dir, get_model_dir
+import utilities.gpu as gpu_tool
 
 # Import the setup scripts for different types of model
 from models.RNN.rnn import BiRNN as BiRNN_model

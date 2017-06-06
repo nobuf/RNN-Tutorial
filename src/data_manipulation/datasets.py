@@ -8,7 +8,7 @@ from collections import namedtuple
 
 from features.utils.load_audio_to_mem import get_audio_and_transcript, pad_sequences
 from features.utils.text import sparse_tuple_from
-from utils.set_dirs import get_data_dir
+from utilities.set_dirs import get_data_dir
 
 
 DataSets = namedtuple('DataSets', 'train dev test')

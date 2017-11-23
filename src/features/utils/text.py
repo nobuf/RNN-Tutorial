@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import unicodedata
 import codecs
@@ -8,7 +10,17 @@ import tensorflow as tf
 # Constants
 SPACE_TOKEN = '<space>'
 SPACE_INDEX = 0
-FIRST_INDEX = ord('a') - 1  # 0 is reserved to space
+#FIRST_INDEX = ord('a') - 1  # 0 is reserved to space
+# reserve the first index for space
+#JAPANESE_CHARACTERS = list(u" いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせすん")
+JAPANESE_CHARACTERS = list(u" 要一ゃ措内ょ最安済事再希わんじ外超会 党環予昨カ優0儲4茶方費示談るタ労員ッ必いデ兆えニ半重がハ県金2ご盗策願開討針鼻ミ除だ代面日つとル資置ばン言年表へ任選固企む丁垂や円よ程れ小公排引難気挙続朝府速無加#関遇出循責グ3割張ゴ7営相手建理ダ掲蓄ぇ積か配く迎バこ寒捕ピし取留高野ボたっ発来で部に自業道は共声びヒ極直求後違見合好ー現め省。約率分ら月残上ろ明税抑間誕備検実的財交帰繋訪キ逮ケ進サ制ス伸去下チあ計組投うド午おネ経総過パげ氏受ざ務ず身拡向臣院ュ寧て全なロ6の議互調執ぶ査社国池ま、擁体も者ゆ消り倍賃意頑民を懇対北望中生想両枠産定春曇大度温伝猫衆設障1新課5男先運画人立政更校元久球働今き連問行け当黒さ量敗ブす闘応潟回ちモ玉どリね諮保述歳具べ席%前埼使数")
+
+def chr_japanese(i):
+    return JAPANESE_CHARACTERS[i]
+
+
+def ord_japanese(c):
+    return JAPANESE_CHARACTERS.index(c)
 
 
 def normalize_txt_file(txt_file, remove_apostrophe=True):
@@ -27,12 +39,14 @@ def normalize_text(original, remove_apostrophe=True):
     """
     # convert any unicode characters to ASCII equivalent
     # then ignore anything else and decode to a string
-    result = unicodedata.normalize("NFKD", original).encode("ascii", "ignore").decode()
-    if remove_apostrophe:
-        # remove apostrophes to keep contractions together
-        result = result.replace("'", "")
-    # return lowercase alphabetic characters and apostrophes (if still present)
-    return re.sub("[^a-zA-Z']+", ' ', result).strip().lower()
+    # result = unicodedata.normalize("NFKD", original).encode("ascii", "ignore").decode()
+    # if remove_apostrophe:
+    #     # remove apostrophes to keep contractions together
+    #     result = result.replace("'", "")
+    # # return lowercase alphabetic characters and apostrophes (if still present)
+    # return re.sub("[^a-zA-Z']+", ' ', result).strip().lower()
+    result = original.replace('\r', ' ').replace('\n', ' ')
+    return result.strip().lower()
 
 
 def text_to_char_array(original):
@@ -56,7 +70,7 @@ def text_to_char_array(original):
     result = np.hstack([SPACE_TOKEN if xt == '' else list(xt) for xt in result])
 
     # Return characters mapped into indicies
-    return np.asarray([SPACE_INDEX if xt == SPACE_TOKEN else ord(xt) - FIRST_INDEX for xt in result])
+    return np.asarray([SPACE_INDEX if xt == SPACE_TOKEN else ord_japanese(xt) for xt in result])
 
 
 def sparse_tuple_from(sequences, dtype=np.int32):
@@ -121,7 +135,7 @@ def sparse_tuple_to_texts(tuple):
     for i in range(len(indices)):
         index = indices[i][0]
         c = values[i]
-        c = ' ' if c == SPACE_INDEX else chr(c + FIRST_INDEX)
+        c = ' ' if c == SPACE_INDEX else chr_japanese(c)
         results[index] = results[index] + c
     # List of strings
     return results
@@ -138,7 +152,7 @@ def ndarray_to_text(value):
     '''
     results = ''
     for i in range(len(value)):
-        results += chr(value[i] + FIRST_INDEX)
+        results += chr_japanese(value[i])
     return results.replace('`', ' ')
 
 

@@ -510,9 +510,9 @@ class Tf_train_ctc(object):
                     for orig, decoded_arr in zip(dense_labels, dense_decoded):
                         # convert to strings
                         decoded_str = ndarray_to_text(decoded_arr)
-                        logger.info('Batch {}, file {}'.format(batch, counter))
-                        logger.info('Original: {}'.format(orig))
-                        logger.info('Decoded:  {}'.format(decoded_str))
+                        logger.info(u'Batch {}, file {}'.format(batch, counter))
+                        logger.info(u'Original: {}'.format(orig))
+                        logger.info(u'Decoded:  {}'.format(decoded_str))
                         counter += 1
 
                 # save out variables for testing
